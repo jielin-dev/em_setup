@@ -1,0 +1,156 @@
+;; .emacs
+
+;;; uncomment this line to disable loading of "default.el" at startup
+;; (setq inhibit-default-init t)
+
+;; enable visual feedback on selections
+;(setq transient-mark-mode t)
+
+;; default to better frame titles
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(require 'package)
+(setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+                         ("marmalade" . "https://marmalade-repo.org/packages/")
+                         ("melpa" . "https://melpa.org/packages/")))
+
+(package-initialize)
+(add-to-list 'load-path "~/.emacs.d/evil")
+(require 'evil)
+(evil-mode 1)
+(setq evil-want-fine-undo t)
+(evil-select-search-module 'evil-search-module 'evil-search)
+;;treat underscore as part of word
+(with-eval-after-load 'evil (defalias #'forward-evil-word #'forward-evil-symbol))
+
+;;case sensitive search for evil mode search
+(setq evil-ex-search-case 'sensitive)
+;;(modify-syntax-entry ?_ "w")
+
+;;the following block is for markdown support
+;;load the markdown mode
+(add-to-list 'load-path "~/.emacs.d/markdown-mode")
+(autoload 'markdown-mode "markdown-mode" "Major mode for editing Markdown files" t)
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+
+(autoload 'gfm-mode "markdown-mode" "Major mode for editing GitHub Flavored Markdown files" t)
+(add-to-list 'auto-mode-alist '("README\\.md\\'" . gfm-mode))
+;;the markdown parser binary with tex math support
+(custom-set-variables '(markdown-command "/usr/bin/pandoc -s --mathjax"))
+;;support math syntax highlighting
+(setq markdown-enable-math t)
+;;END of markdown block
+
+(setq frame-title-format
+      (concat  "%b - emacs@" (system-name)))
+
+;; default to unified diffs
+(setq diff-switches "-u")
+
+;; always end a file with a newline
+;(setq require-final-newline 'query)
+
+;;; uncomment for CJK utf-8 support for non-Asian users
+;; (require 'un-define)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
+ '(compilation-message-face (quote default))
+ '(custom-enabled-themes (quote (wheatgrass)))
+ '(custom-safe-themes
+   (quote
+    ("d6922c974e8a78378eacb01414183ce32bc8dbf2de78aabcc6ad8172547cb074" "7feeed063855b06836e0262f77f5c6d3f415159a98a9676d549bfeb6c49637c4" "8ed752276957903a270c797c4ab52931199806ccd9f0c3bb77f6f4b9e71b9272" default)))
+ '(fci-rule-color "#3C3D37")
+ '(highlight-changes-colors (quote ("#FD5FF0" "#AE81FF")))
+ '(highlight-tail-colors
+   (quote
+    (("#3C3D37" . 0)
+     ("#679A01" . 20)
+     ("#4BBEAE" . 30)
+     ("#1DB4D0" . 50)
+     ("#9A8F21" . 60)
+     ("#A75B00" . 70)
+     ("#F309DF" . 85)
+     ("#3C3D37" . 100))))
+ '(magit-diff-use-overlays nil)
+ '(package-selected-packages
+   (quote
+    (markdown-mode yaml-mode cmake-mode cyberpunk-theme hemisu-theme undo-tree ace-window monokai-theme use-package org)))
+ '(pos-tip-background-color "#FFFACE")
+ '(pos-tip-foreground-color "#272822")
+ '(vc-annotate-background nil)
+ '(vc-annotate-color-map
+   (quote
+    ((20 . "#F92672")
+     (40 . "#CF4F1F")
+     (60 . "#C26C0F")
+     (80 . "#E6DB74")
+     (100 . "#AB8C00")
+     (120 . "#A18F00")
+     (140 . "#989200")
+     (160 . "#8E9500")
+     (180 . "#A6E22E")
+     (200 . "#729A1E")
+     (220 . "#609C3C")
+     (240 . "#4E9D5B")
+     (260 . "#3C9F79")
+     (280 . "#A1EFE4")
+     (300 . "#299BA6")
+     (320 . "#2896B5")
+     (340 . "#2790C3")
+     (360 . "#66D9EF"))))
+ '(vc-annotate-very-old-color nil)
+ '(weechat-color-list
+   (unspecified "#272822" "#3C3D37" "#F70057" "#F92672" "#86C30D" "#A6E22E" "#BEB244" "#E6DB74" "#40CAE4" "#66D9EF" "#FB35EA" "#FD5FF0" "#74DBCD" "#A1EFE4" "#F8F8F2" "#F8F8F0")))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+;;(load-theme 'monokai)
+;;(load-theme 'manoj-dark)
+;;(load_theme 'wheatgrass)
+;;(load-theme 'hemisu-dark)
+(load-theme 'cyberpunk)
+
+;;case sensitive search
+(setq case-fold-search nil)
+;;This line instructs emacs to display line numbers in the file
+;;(global-linum-mode t)
+
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
+(show-paren-mode t)
+;;This line instructs emacs to display the column
+(setq column-number-mode t)
+;;This line disables using tab to indent
+(setq-default indent-tabs-mode nil)
+;;This line sets the indentation of nested code to 4 spaces
+(setq c-basic-offset 4)
+;;this line instructs to treat .cu files as cc files
+(add-to-list 'auto-mode-alist '("\\.cu\\'" . c-mode))
+
+;;switch between windows in ace-window
+(global-set-key (kbd "M-p") 'ace-window)
+
+;;undo-tree
+(require 'undo-tree)
+(global-undo-tree-mode)
+(setq x-select-enable-clipboard t)
+;;(setq interprogram-paste-function 'x-cut-buffer-or-select-value)
+
+;;set the window size upon start
+(if (window-system)
+  (set-frame-height (selected-frame) 35))
+;;do not split window upon start
+(setq inhibit-startup-screen t)
